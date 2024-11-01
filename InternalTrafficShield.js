@@ -5,6 +5,8 @@
 // @description  Set traffic_type to internal for Google Analytics 4 via dataLayer on all sites
 // @match        *://*/*
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/Cornholio6969/InternalAnalytics/main/InternalTrafficShield.js
+// @downloadURL  https://raw.githubusercontent.com/Cornholio6969/InternalAnalytics/main/InternalTrafficShield.js
 // ==/UserScript==
 
 (function() {
