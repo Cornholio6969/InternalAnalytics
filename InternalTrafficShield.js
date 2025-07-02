@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GA4 Internal Traffic Tag via dataLayer
 // @namespace    http://tampermonkey.net/
-// @version      1.5
+// @version      1.6
 // @description  Set traffic_type to internal for Google Analytics 4 via dataLayer on all sites
 // @match        *://*/*
 // @grant        none
@@ -19,17 +19,17 @@
     }
 
     function waitForDataLayer() {
-        if (window.dataLayer && Array.isArray(window.dataLayer)) {
-            setInternalTrafficTag();
-        } else {
-            const observer = new MutationObserver(() => {
-                if (window.dataLayer && Array.isArray(window.dataLayer)) {
-                    setInternalTrafficTag();
-                    observer.disconnect();
-                }
-            });
-            observer.observe(document, { childList: true, subtree: true });
-        }
+        const maxAttempts = 100; // ~10 seconds with 100ms interval
+        let attempts = 0;
+
+        const interval = setInterval(() => {
+            if (window.dataLayer && Array.isArray(window.dataLayer)) {
+                setInternalTrafficTag();
+                clearInterval(interval);
+            } else if (attempts++ >= maxAttempts) {
+                clearInterval(interval);
+            }
+        }, 100);
     }
 
     waitForDataLayer();
